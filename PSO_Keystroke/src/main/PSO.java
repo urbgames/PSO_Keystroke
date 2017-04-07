@@ -22,13 +22,13 @@ public class PSO {
 			population.add(factoryParticle.factoryParticle());
 
 		for (int i = 0; i < maxInteration; i++) {
-
+			
 			long startTime = System.currentTimeMillis();
 			for (int j = 0; j < population.size(); j++)
 				Update.updateParticle(population.get(j));
 			Update.updatePopulation(population);
 			long totalTime = System.currentTimeMillis() - startTime;
-
+			
 			ParticleToExcel.updateExcelByGeneration(excelGenerator, population, i, totalTime);
 
 		}
@@ -38,8 +38,8 @@ public class PSO {
 
 	public static void main(String[] args) throws Exception {
 
-		for (int i = 0; i < 2; i++) {
-			new PSO(10, 10, i);
+		for (int i = 0; i < 20; i++) {
+			new PSO(100, 100, i);
 			Classification.getInstance().changeSeed();
 		}
 	}

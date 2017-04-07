@@ -12,11 +12,10 @@ import weka.filters.unsupervised.attribute.Remove;
 
 public final class Classification {
 
-	//EXPERIMENTO01
-	//private String base3 = "C:\\Users\\Urbgames\\Documents\\keystroke_71features.arff";
+	private String base3 = "C:\\Users\\Urbgames\\Documents\\keystroke_71features.arff";
 	private String base4 = "C:\\Users\\Urbgames\\Documents\\keystroke_normalized_1.arff";
 	private static Instances dataAll = null;
-	private String baseCurrent = base4;
+	private String baseCurrent = base3;
 	private static int seed = 0;
 	
 

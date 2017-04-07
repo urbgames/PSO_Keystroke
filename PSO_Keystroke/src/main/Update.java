@@ -18,17 +18,22 @@ public class Update {
 			pVelocities[i] = weight * particle.getVelocity()[i]
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getpBest()[i] - particle.getPosition()[i])
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getgBest()[i] - particle.getPosition()[i]);
-			pPositions[i] = particle.getPosition()[i] + pVelocities[i];
+			double position = particle.getPosition()[i] + pVelocities[i];
+			if (position > 2)
+				position = 2;
+			else if (position < -2)
+				position = -2;
+			pPositions[i] = position;
 		}
-		
+
 		particle.setVelocity(pVelocities);
 		particle.setPosition(pPositions);
-		
+
 		ResultClassification resultClassification = Fitness.getClassification(particle);
 		particle.setFitness(resultClassification.getPctCorrect());
 		particle.setFAR(resultClassification.getFAR());
 		particle.setFRR(resultClassification.getFRR());
-		
+
 		if (particle.getFitnesspBest() < particle.getFitness()) {
 			particle.setpBest(pPositions);
 			particle.setFitnesspBest(particle.getFitness());
