@@ -18,12 +18,11 @@ public class Update {
 			pVelocities[i] = weight * particle.getVelocity()[i]
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getpBest()[i] - particle.getPosition()[i])
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getgBest()[i] - particle.getPosition()[i]);
-			double position = particle.getPosition()[i] + pVelocities[i];
-			if (position > 2)
-				position = 2;
-			else if (position < -2)
-				position = -2;
-			pPositions[i] = position;
+			double sigmoidV = 1 / (1 + Math.exp(-pVelocities[i]));
+			if (Math.random() < sigmoidV)
+				pPositions[i] = 1;
+			else
+				pPositions[i] = -1;
 		}
 
 		particle.setVelocity(pVelocities);

@@ -38,7 +38,7 @@ public class PSO {
 
 	public static void main(String[] args) throws Exception {
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			new PSO(100, 100, i);
 			Classification.getInstance().changeSeed();
 		}
