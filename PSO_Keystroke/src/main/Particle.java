@@ -79,14 +79,14 @@ public class Particle implements Comparable<Particle> {
 	public boolean[] getBinaryParticle() {
 		boolean[] positionsTemp = new boolean[size];
 		for (int i = 0; i < size; i++)
-			positionsTemp[i] = position[i] >= 0 ? true : false;
+			positionsTemp[i] = position[i] == 1 ? true : false;
 		return positionsTemp;
 	}
 
 	public String toStringBinary() {
 		String arrayString = "[";
 		for (int i = 0; i < position.length; i++) {
-			arrayString += position[i] >= 0 ? 1 : 0;
+			arrayString += position[i] == 1 ? 1 : 0;
 			if (i + 1 != position.length) {
 				arrayString += ",";
 			}

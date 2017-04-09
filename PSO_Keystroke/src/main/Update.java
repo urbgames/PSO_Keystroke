@@ -22,7 +22,7 @@ public class Update {
 			if (Math.random() < sigmoidV)
 				pPositions[i] = 1;
 			else
-				pPositions[i] = -1;
+				pPositions[i] = 0;
 		}
 
 		particle.setVelocity(pVelocities);
