@@ -98,7 +98,7 @@ public class Particle implements Comparable<Particle> {
 	public String toStringBinarygBest() {
 		String arrayString = "[";
 		for (int i = 0; i < gBest.length; i++) {
-			arrayString += gBest[i] >= 0 ? 1 : 0;
+			arrayString += gBest[i] == 1 ? 1 : 0;
 			if (i + 1 != gBest.length) {
 				arrayString += ",";
 			}
@@ -106,7 +106,7 @@ public class Particle implements Comparable<Particle> {
 		arrayString += "]";
 		return arrayString;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Arrays.toString(position);
