@@ -38,8 +38,8 @@ public class PSO {
 
 	public static void main(String[] args) throws Exception {
 
-		for (int i = 0; i < 10; i++) {
-			new PSO(100, 100, i);
+		for (int i = 0; i < 2; i++) {
+			new PSO(100, 300, i);
 			Classification.getInstance().changeSeed();
 		}
 	}

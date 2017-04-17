@@ -6,7 +6,6 @@ import main.Particle;
 public class FactoryParticle {
 
 	private static volatile FactoryParticle instance;
-	private int IDGenarator = 0;
 	private static int lengthGenes;
 	private static Classification classification;
 
