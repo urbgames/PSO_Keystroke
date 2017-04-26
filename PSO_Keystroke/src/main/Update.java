@@ -37,6 +37,8 @@ public class Update {
 		if (particle.getFitnesspBest() < particle.getFitness()) {
 			particle.setpBest(pPositions);
 			particle.setFitnesspBest(particle.getFitness());
+			particle.setFAR(particle.getFAR());
+			particle.setFRR(particle.getFRR());
 		}
 	}
 
@@ -47,6 +49,8 @@ public class Update {
 			for (int i = 0; i < population.size(); i++) {
 				population.get(i).setgBest(population.get(0).getPosition());
 				population.get(i).setFitnessgBest(population.get(0).getFitness());
+				population.get(i).setgBestFAR(population.get(0).getFAR());
+				population.get(i).setgBestFRR(population.get(0).getFRR());
 			}
 	}
 

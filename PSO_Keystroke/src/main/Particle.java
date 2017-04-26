@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Particle implements Comparable<Particle> {
 
 	private double pBest[], gBest[], position[], velocity[];
-	private double fitness, fitnesspBest, fitnessgBest, FAR, FRR;
+	private double fitness, fitnesspBest, fitnessgBest, FAR, FRR, gBestFAR, gBestFRR;
 	private int size;
 
 	public Particle(int size) {
@@ -106,7 +106,7 @@ public class Particle implements Comparable<Particle> {
 		arrayString += "]";
 		return arrayString;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Arrays.toString(position);
@@ -142,6 +142,22 @@ public class Particle implements Comparable<Particle> {
 
 	public void setFRR(double fRR) {
 		FRR = fRR;
+	}
+
+	public double getgBestFAR() {
+		return gBestFAR;
+	}
+
+	public void setgBestFAR(double gBestFAR) {
+		this.gBestFAR = gBestFAR;
+	}
+
+	public double getgBestFRR() {
+		return gBestFRR;
+	}
+
+	public void setgBestFRR(double gBestFRR) {
+		this.gBestFRR = gBestFRR;
 	}
 
 	public int getEnableFeaturesgBest() {
