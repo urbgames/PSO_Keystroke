@@ -46,6 +46,7 @@ public class ThreadManager extends Thread{
 		try {
 			while (br.ready()) {
 				String line = br.readLine();
+				System.out.println(line);
 				if (line.startsWith("%"))
 					continue;
 				else if (line.startsWith("REPETITION"))
