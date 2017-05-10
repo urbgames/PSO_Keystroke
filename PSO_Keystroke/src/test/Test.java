@@ -18,26 +18,30 @@ public class Test {
 //		
 //	BayesNet classifier = new BayesNet();
 //		
-//		if (data.classIndex() == -1)
-//			data.setClassIndex(data.numAttributes() - 1);
-//		// VALIDAÇÃO CRUZADA
-//		Evaluation eval = new Evaluation(data);
-//		try {
-//			eval.crossValidateModel(classifier, data, 10, new Random(1));
-//		} catch (Exception e) {
-//			eval.crossValidateModel(classifier, data, 10, new Random(1));
-//		}
-//
-//		double resultado = eval.pctCorrect();
-//
-//		System.out.println(eval.pctCorrect());
+		
+		LibSVM classifier = new LibSVM();
+		classifier.setCost(7.46);
+		classifier.setGamma(0.25);
+		classifier.setNormalize(true);
+		
+		if (data.classIndex() == -1)
+			data.setClassIndex(data.numAttributes() - 1);
+		// VALIDAÇÃO CRUZADA
+		Evaluation eval = new Evaluation(data);
+		try {
+			eval.crossValidateModel(classifier, data, 10, new Random(1));
+		} catch (Exception e) {
+			eval.crossValidateModel(classifier, data, 10, new Random(1));
+		}
+
+		System.out.println(eval.pctCorrect());
 
 
-		Classification classification = new Classification(Classification.BAYESNET);
-		int seed = classification.getSeed();
-		Classification classification2 = new Classification(Classification.NAIVEBAYES);
-		int seed2 = classification2.getSeed();
-		System.out.println("oi");
+//		Classification classification = new Classification(Classification.BAYESNET);
+//		int seed = classification.getSeed();
+//		Classification classification2 = new Classification(Classification.NAIVEBAYES);
+//		int seed2 = classification2.getSeed();
+//		System.out.println("oi");
 	}
 
 }
