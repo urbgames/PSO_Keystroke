@@ -1,12 +1,9 @@
 package thread;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import classificator.Classification;
 import main.PSO;
 
-public class ClassificatorThread extends Observable {
+public class ClassificatorThread{
 
 	public ClassificatorThread(int sizePopulation, int maxInteration, int repetition, ThreadManager observer,
 			String Classifier) {

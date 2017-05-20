@@ -5,10 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
-public class ThreadManager extends Thread{
+public class ThreadManager extends Thread {
 
 	private BufferedReader br;
 	private int repetition, maxInteration, sizePopulation;
@@ -33,7 +31,6 @@ public class ThreadManager extends Thread{
 		listClassifierCountThreadTotal.forEach((classifier, value) -> {
 			while (listClassifierCountThreadCurrent.get(classifier) < value) {
 				createThreadClassifier(classifier);
-				listClassifierCountThreadCurrent.put(classifier, listClassifierCountThreadCurrent.get(classifier) + 1);
 			}
 		});
 
@@ -59,17 +56,19 @@ public class ThreadManager extends Thread{
 					listClassifierCountThreadTotal.put(line.split(":")[0].substring(1, line.split(":")[0].length()),
 							Integer.parseInt(line.split(":")[1]));
 					listClassifierExecuted.put(line.split(":")[0].substring(1, line.split(":")[0].length()), 0);
-					listClassifierCountThreadCurrent.put(line.split(":")[0].substring(1, line.split(":")[0].length()), 0);
+					listClassifierCountThreadCurrent.put(line.split(":")[0].substring(1, line.split(":")[0].length()),
+							0);
 				}
 			}
 		} catch (Exception exception) {
 			System.err.println(exception.getMessage());
 		}
-	
+
 	}
 
 	public void update(Object classifier) {
 		listClassifierCountThreadCurrent.put((String) classifier, listClassifierCountThreadCurrent.get(classifier) - 1);
+		System.out.println(classifier + " " + listClassifierCountThreadCurrent.get(classifier));
 
 		if (listClassifierExecuted.get((String) classifier) < repetition) {
 			createThreadClassifier((String) classifier);
@@ -87,8 +86,10 @@ public class ThreadManager extends Thread{
 	}
 
 	private void createThreadClassifier(String classifier) {
-		new ClassificatorThread(sizePopulation, maxInteration, listClassifierExecuted.get(classifier), this, classifier);
+		new ClassificatorThread(sizePopulation, maxInteration, listClassifierExecuted.get(classifier), this,
+				classifier);
 		listClassifierExecuted.put((String) classifier, listClassifierExecuted.get(classifier) + 1);
+		listClassifierCountThreadCurrent.put(classifier, listClassifierCountThreadCurrent.get(classifier) + 1);
 	}
 
 }
