@@ -11,9 +11,11 @@ import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
+import weka.core.Utils;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
+import weka.filters.unsupervised.instance.RemovePercentage;
 
 public final class Classification {
 
@@ -83,13 +85,28 @@ public final class Classification {
 
 		if (data.classIndex() == -1)
 			data.setClassIndex(data.numAttributes() - 1);
+
 		// VALIDAÇÃO CRUZADA
-		Evaluation eval = new Evaluation(data);
+		/*Evaluation eval = new Evaluation(data);
 		try {
 			eval.crossValidateModel(classifier, data, 10, new Random(seed));
 		} catch (Exception e) {
 			eval.crossValidateModel(classifier, data, 10, new Random(seed));
-		}
+		}*/
+
+		data.randomize(new Random(seed));
+		
+		RemovePercentage percentageData = new RemovePercentage();
+		percentageData.setInputFormat(data);
+		percentageData.setOptions(Utils.splitOptions("-P 90"));
+		Instances dataTest = Filter.useFilter(data, percentageData);
+		
+		percentageData.setOptions(Utils.splitOptions("-V -P 90"));
+		Instances dataTrain = Filter.useFilter(data, percentageData);
+		
+		classifier.buildClassifier(dataTrain);
+		Evaluation eval = new Evaluation(dataTrain);
+		eval.evaluateModel(classifier, dataTest);
 
 		double avgFAR = 0, avgFRR = 0;
 		for (int i = 0; i < data.numClasses(); i++) {
