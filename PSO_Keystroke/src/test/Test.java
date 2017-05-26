@@ -1,24 +1,19 @@
 package test;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
-import classificator.Classification;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.MultilayerPerceptron;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.instance.RemovePercentage;
+
+//##CÓDIGO ALTERADO
+//TAG PARA ALTERAÇÃO DE CÓDIGO
 
 public class Test {
 
@@ -30,22 +25,21 @@ public class Test {
 		data = new DataSource(base3).getDataSet();
 		if (data.classIndex() == -1)
 			data.setClassIndex(data.numAttributes() - 1);
-		
-		classifier = new BayesNet();
+
+		MultilayerPerceptron mlp = new MultilayerPerceptron();
+		mlp.setLearningRate(0.05);
+		mlp.setMomentum(0.3);
+		mlp.setValidationThreshold(20);
+		mlp.setValidationSetSize(30);
+		mlp.setTrainingTime(1000);
+//		mlp.setDecay(true);
+		classifier = mlp;
 	}
 
-	public void testClassificationPercent() throws Exception {
+	public void splitValidation() throws Exception {
 
-		// VALIDAÇÃO CRUZADA
-		/*
-		 * Evaluation eval = new Evaluation(data); try {
-		 * eval.crossValidateModel(classifier, data, 10, new Random(seed)); }
-		 * catch (Exception e) { eval.crossValidateModel(classifier, data, 10,
-		 * new Random(seed)); }
-		 */
+		data.randomize(new Random());
 
-		data.randomize(new Random(2));
-		
 		RemovePercentage percentageData = new RemovePercentage();
 		percentageData.setInputFormat(data);
 		percentageData.setOptions(Utils.splitOptions("-P 90"));
@@ -59,24 +53,10 @@ public class Test {
 		eval.evaluateModel(classifier, dataTest);
 
 		System.out.println(eval.pctCorrect());
+		System.out.println(((MultilayerPerceptron) classifier).getTrainingTime());
 	}
 
-	public void crossValidation() throws Exception{
-
-
-		// BayesNet classifier = new BayesNet();
-		//
-		// Object object = new Object[] {};
-		//
-		// if (data.classIndex() == -1)
-		// data.setClassIndex(data.numAttributes() - 1);
-		// // VALIDAÇÃO CRUZADA
-		// Evaluation eval = new Evaluation(data);
-		// try {
-		// eval.crossValidateModel(classifier, data, 10, new Random(1));
-		// } catch (Exception e) {
-		// eval.crossValidateModel(classifier, data, 10, new Random(1));
-		// }
+	public void crossValidation() throws Exception {
 
 		if (data.classIndex() == -1)
 			data.setClassIndex(data.numAttributes() - 1);
@@ -91,14 +71,10 @@ public class Test {
 
 		int numFolds = 10;
 		dataTemp.randomize(new Random(1));
+
 		if (dataTemp.classAttribute().isNominal()) {
 			dataTemp.stratify(numFolds);
 		}
-
-		// for (Enumeration<Instance> e = data.enumerateInstances();
-		// e.hasMoreElements();){
-		// System.out.println(e.nextElement().classValue());
-		// }
 
 		for (int i = 0; i < numFolds; i++) {
 			Instances train = dataTemp.trainCV(numFolds, i, new Random(1));
@@ -112,14 +88,16 @@ public class Test {
 
 		System.out.println(eval.pctCorrect());
 
-		
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 
-		Test test = new Test();
-		test.testClassificationPercent();
+		double start = System.currentTimeMillis();
 
+		Test test = new Test();
+		test.splitValidation();
+
+		System.out.println(System.currentTimeMillis() - start);
 	}
 
 }
