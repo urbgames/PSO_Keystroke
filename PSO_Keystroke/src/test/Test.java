@@ -31,7 +31,7 @@ public class Test {
 		mlp.setMomentum(0.3);
 		mlp.setValidationThreshold(20);
 		mlp.setValidationSetSize(30);
-		mlp.setTrainingTime(1000);
+		mlp.setTrainingTime(5000);
 //		mlp.setDecay(true);
 		classifier = mlp;
 	}
@@ -53,7 +53,6 @@ public class Test {
 		eval.evaluateModel(classifier, dataTest);
 
 		System.out.println(eval.pctCorrect());
-		System.out.println(((MultilayerPerceptron) classifier).getTrainingTime());
 	}
 
 	public void crossValidation() throws Exception {
