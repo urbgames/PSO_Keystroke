@@ -20,7 +20,6 @@ import weka.filters.unsupervised.instance.RemovePercentage;
 public final class Classification {
 
 	private String base3 = "keystroke_71features.arff";
-	private String base4 = "C:\\Users\\Urbgames\\Documents\\keystroke_normalized_1.arff";
 	private static Instances dataAll = null;
 	private String baseCurrent = base3;
 	public int seed;
@@ -162,7 +161,13 @@ public final class Classification {
 			this.classifier = new RandomForest();
 			break;
 		case MLP:
-			this.classifier = new MultilayerPerceptron();
+			MultilayerPerceptron mlp = new MultilayerPerceptron();
+			mlp.setLearningRate(0.05);
+			mlp.setMomentum(0.3);
+			mlp.setValidationThreshold(20);
+			mlp.setValidationSetSize(30);
+			mlp.setTrainingTime(5000);
+			this.classifier = mlp;
 			break;
 		default:
 			this.classifier = null;

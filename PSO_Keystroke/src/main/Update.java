@@ -20,7 +20,6 @@ public class Update {
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getpBest()[i] - particle.getPosition()[i])
 					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getgBest()[i] - particle.getPosition()[i]);
 			double position = particle.getPosition()[i] + pVelocities[i];
-			System.out.println(position);
 			if (position > 2)
 				position = 2;
 			else if (position < -2)

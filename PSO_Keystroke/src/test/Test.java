@@ -32,7 +32,7 @@ public class Test {
 		mlp.setValidationThreshold(20);
 		mlp.setValidationSetSize(30);
 		mlp.setTrainingTime(5000);
-//		mlp.setDecay(true);
+		mlp.setDecay(true);
 		classifier = mlp;
 	}
 
