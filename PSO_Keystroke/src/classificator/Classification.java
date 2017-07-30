@@ -86,23 +86,23 @@ public final class Classification {
 			data.setClassIndex(data.numAttributes() - 1);
 
 		// VALIDAÇÃO CRUZADA
-		/*Evaluation eval = new Evaluation(data);
-		try {
-			eval.crossValidateModel(classifier, data, 10, new Random(seed));
-		} catch (Exception e) {
-			eval.crossValidateModel(classifier, data, 10, new Random(seed));
-		}*/
+		/*
+		 * Evaluation eval = new Evaluation(data); try {
+		 * eval.crossValidateModel(classifier, data, 10, new Random(seed)); }
+		 * catch (Exception e) { eval.crossValidateModel(classifier, data, 10,
+		 * new Random(seed)); }
+		 */
 
 		data.randomize(new Random(seed));
-		
+
 		RemovePercentage percentageData = new RemovePercentage();
 		percentageData.setInputFormat(data);
 		percentageData.setOptions(Utils.splitOptions("-P 90"));
 		Instances dataTest = Filter.useFilter(data, percentageData);
-		
+
 		percentageData.setOptions(Utils.splitOptions("-V -P 90"));
 		Instances dataTrain = Filter.useFilter(data, percentageData);
-		
+
 		classifier.buildClassifier(dataTrain);
 		Evaluation eval = new Evaluation(dataTrain);
 		eval.evaluateModel(classifier, dataTest);
@@ -126,13 +126,16 @@ public final class Classification {
 
 	}
 
-	public Classification(String classifier) throws Exception {
+	public Classification(String classifier, int... seedCreated) throws Exception {
 		if (dataAll == null) {
 			dataAll = new DataSource(baseCurrent).getDataSet();
 		}
-		
-		seed = new Random().nextInt();
-		
+
+		if (seedCreated.length > 0)
+			seed = seedCreated[0];
+		else
+			seed = new Random().nextInt();
+
 		this.classifierName = classifier;
 		switch (classifier) {
 		case BAYESNET:
@@ -176,9 +179,9 @@ public final class Classification {
 
 	}
 
-//	private void changeSeed() throws IOException {
-//		seed = new Random().nextInt();
-//	}
+	// private void changeSeed() throws IOException {
+	// seed = new Random().nextInt();
+	// }
 
 	public String getClassifierName() {
 		return classifierName;

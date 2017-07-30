@@ -1,6 +1,8 @@
 package excelGenerator;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -11,18 +13,45 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class ExcelGenerator {
 
-	// DIRECTORY TO SAVE METRIC GA .XLS
 	private String fileName = "";
-	private HSSFWorkbook workbook;
-	private HSSFSheet sheetInfoGA;
+	// private HSSFWorkbook workbook;
+	// private HSSFSheet sheetInfoGA;
+
+	public static void clearFiles() {
+		File[] files = new File(".").listFiles();
+		for (File file : files) {
+			if (file.isFile()) {
+				String fileName = file.getName();
+				if (fileName.contains("_Experimento") && fileName.endsWith(".xls")) {
+					System.out.println(file.getName());
+					file.delete();
+				}
+			}
+		}
+	}
 
 	public ExcelGenerator(String order) {
 		this.fileName += order + ".xls";
-		workbook = new HSSFWorkbook();
-		sheetInfoGA = workbook.createSheet("PSO");
+		// workbook = new HSSFWorkbook();
+		// sheetInfoGA = workbook.createSheet("PSO");
 	}
 
-	public void insertCellInfo(int row, int cell, Object info, int cellTypeNumeric) {
+	public synchronized void insertCellInfo(int row, int cell, Object info, int cellTypeNumeric) {
+
+		HSSFWorkbook workbook = null;
+		HSSFSheet sheetInfoGA = null;
+		if (new File(fileName).exists()) {
+			try {
+				workbook = new HSSFWorkbook(new FileInputStream(fileName));
+				sheetInfoGA = workbook.getSheetAt(0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			workbook = new HSSFWorkbook();
+			sheetInfoGA = workbook.createSheet("PSO");
+		}
+
 		Row row2;
 		if (sheetInfoGA.getRow(row) == null) {
 			row2 = sheetInfoGA.createRow(row);
@@ -34,16 +63,16 @@ public class ExcelGenerator {
 			cell2.setCellValue(Double.parseDouble(String.valueOf(info)));
 		else
 			cell2.setCellValue(String.valueOf(info));
-	}
 
-	public void saveFile() {
+		FileOutputStream outputStream;
 		try {
-			System.out.println(fileName);
-			FileOutputStream outputStream = new FileOutputStream(new File(fileName));
+			outputStream = new FileOutputStream(new File(fileName));
 			workbook.write(outputStream);
 			outputStream.close();
-		} catch (IOException e) {
-			System.err.println(e.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
+
 }

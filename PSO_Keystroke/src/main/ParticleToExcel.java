@@ -8,7 +8,7 @@ import excelGenerator.ExcelGenerator;
 
 public class ParticleToExcel {
 
-	public static void updateExcelByGeneration(ExcelGenerator excelGenerator,List<Particle> population, int interation, long totalTime, int seed) throws Exception{
+	public static void updateExcelByGeneration(ExcelGenerator excelGenerator,List<Particle> population, int interation, long totalTime, int seed){
 //		System.out.println("The best particle is: " + population.get(0).getFitnessgBest() + " in interation " + interation);
 		excelGenerator.insertCellInfo(interation + 1, 0, interation, Cell.CELL_TYPE_STRING);
 		excelGenerator.insertCellInfo(interation + 1, 1, population.get(0).getFitnessgBest(), Cell.CELL_TYPE_NUMERIC);

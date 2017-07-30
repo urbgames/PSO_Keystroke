@@ -1,14 +1,33 @@
 package test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import main.Particle;
+import systemStatusControl.StatusControl;
+import systemStatusControl.StatusPSO;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
-import weka.classifiers.functions.MultilayerPerceptron;
 import weka.core.Instances;
 import weka.core.Utils;
-import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.instance.RemovePercentage;
 
@@ -19,21 +38,129 @@ public class Test {
 
 	private Instances data;
 	private Classifier classifier;
+	private List<StatusPSO> list;
 
 	public Test() throws Exception {
-		String base3 = "keystroke_71features.arff";
-		data = new DataSource(base3).getDataSet();
-		if (data.classIndex() == -1)
-			data.setClassIndex(data.numAttributes() - 1);
 
-		MultilayerPerceptron mlp = new MultilayerPerceptron();
-		mlp.setLearningRate(0.05);
-		mlp.setMomentum(0.3);
-		mlp.setValidationThreshold(20);
-		mlp.setValidationSetSize(30);
-		mlp.setTrainingTime(5000);
-		mlp.setDecay(true);
-		classifier = mlp;
+		listFilesDirectory();
+
+	}
+
+	public void listFilesDirectory() {
+		File[] files = new File("./_saved").listFiles();
+		for (File file : files) {
+			if (file.isFile()) {
+				String fileName = file.getName();
+				if (fileName.contains("_Experimento") && fileName.endsWith(".xls")) {
+					System.out.println(file.getName());
+					file.delete();
+				}
+			}
+			if (file.isFile()) {
+				String fileName = file.getName();
+				if (fileName.equals("status.json")) {
+					System.out.println(file.getName());
+					file.delete();
+				}
+			}
+		}
+	}
+
+	public void insertValueExcel(int rowNumber, int columnNumber, String value)
+			throws FileNotFoundException, IOException {
+
+		String pathFile = "excelTest.xls";
+		HSSFWorkbook workbook;
+		HSSFSheet sheetInfoGA;
+		if (new File(pathFile).exists()) {
+			workbook = new HSSFWorkbook(new FileInputStream(pathFile));
+			sheetInfoGA = workbook.getSheetAt(0);
+		} else {
+			workbook = new HSSFWorkbook();
+			sheetInfoGA = workbook.createSheet("test");
+		}
+		Row row = sheetInfoGA.createRow(rowNumber);
+		Cell cell = row.createCell(columnNumber);
+		cell.setCellValue(value);
+
+		FileOutputStream outputStream2 = new FileOutputStream(new File(pathFile));
+		workbook.write(outputStream2);
+		outputStream2.close();
+
+	}
+
+	public void testExcelFile() throws IOException {
+
+		insertValueExcel(1, 1, "testando1");
+
+		// System.out.println(new File("excelTest.xls").exists());
+		//
+		// HSSFWorkbook workbook = new HSSFWorkbook();
+		// HSSFSheet sheetInfoGA = workbook.createSheet("test");
+		// Row row = sheetInfoGA.createRow(0);
+		// Cell cell = row.createCell(0);
+		// cell.setCellValue("testando1");
+		// FileOutputStream outputStream = new FileOutputStream(new
+		// File("excelTest.xls"));
+		// workbook.write(outputStream);
+		// outputStream.close();
+		//
+		// HSSFWorkbook workbooo2 = new HSSFWorkbook(new
+		// FileInputStream("excelTest.xls"));
+		// HSSFSheet sheetInfoGA2 = workbooo2.getSheetAt(0);
+		// Row row2 = sheetInfoGA2.getRow(0);
+		// Cell cell2 = row2.createCell(1);
+		// cell2.setCellValue("testando2");
+		// FileOutputStream outputStream2 = new FileOutputStream(new
+		// File("excelTest.xls"));
+		// workbooo2.write(outputStream2);
+		// outputStream2.close();
+
+	}
+
+	public void testObjectTOJson() {
+		List<Particle> particlesList = new ArrayList<>();
+		List<StatusPSO> statusPSO = new ArrayList<>();
+		ObjectMapper mapper = new ObjectMapper();
+		for (int i = 0; i < 20; i++) {
+			particlesList.add(new Particle(30));
+		}
+
+		particlesList.get(0).getPosition()[0] = -1.123123;
+		particlesList.get(0).getPosition()[2] = -1.123123;
+		particlesList.get(0).getPosition()[3] = -1.123123;
+		particlesList.get(0).getPosition()[1] = -1.123123;
+		particlesList.get(0).getPosition()[4] = -1.123123;
+
+		for (int i = 0, j = 0; i < 3; i++, j++) {
+			statusPSO.add(new StatusPSO(particlesList, 1, 10, j, 32, 81768712, "BAYESNET"));
+		}
+		for (int i = 0, j = 0; i < 10; i++, j++) {
+			statusPSO.add(new StatusPSO(particlesList, 1, 10, j, 32, 81768712, "MLP"));
+		}
+
+		Map<String, List<StatusPSO>> statusPSOMap = statusPSO.stream()
+				.collect(Collectors.groupingBy(w -> w.getClassifier()));
+
+		System.out.println(statusPSOMap.get("MLP").size());
+		System.out.println(statusPSOMap.get("BAYESNET").size());
+
+		StatusControl.writeStatus(statusPSO);
+		try {
+			list = mapper.readValue(new File("file.json"), new TypeReference<List<StatusPSO>>() {
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(list.toString());
+		teste("oi", 2, 1L);
+
+	};
+
+	public void teste(Object... teste) {
+
+		System.out.println(teste[1].getClass().getName());
 	}
 
 	public void splitValidation() throws Exception {
@@ -91,12 +218,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 
-		double start = System.currentTimeMillis();
-
 		Test test = new Test();
-		test.splitValidation();
-
-		System.out.println(System.currentTimeMillis() - start);
 	}
 
 }

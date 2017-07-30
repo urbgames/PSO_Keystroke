@@ -2,11 +2,42 @@ package main;
 
 import java.util.Arrays;
 
-public class Particle implements Comparable<Particle> {
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-	private double pBest[], gBest[], position[], velocity[];
-	private double fitness, fitnesspBest, fitnessgBest, FAR, FRR, gBestFAR, gBestFRR;
+public class Particle implements Comparable<Particle> {
+	
+	private double pBest[];
+	private double gBest[];
+	private double position[];
+	private double velocity[];
+	private double fitness;
+	private double fitnesspBest;
+	private double fitnessgBest;
+	private double FAR;
+	private double FRR;
+	private double gBestFAR;
+	private double gBestFRR;
 	private int size;
+
+	@JsonCreator
+	public Particle(@JsonProperty("pBest") double[] pBest, @JsonProperty("gBest") double[] gBest,@JsonProperty("position") double[] position,@JsonProperty("velocity") double[] velocity,@JsonProperty("fitness") double fitness,
+			@JsonProperty("fitnesspBest") double fitnesspBest,@JsonProperty("fitnessgBest") double fitnessgBest,@JsonProperty("fAR") double fAR,@JsonProperty("fRR")  double fRR,@JsonProperty("gBestFAR") double gBestFAR,@JsonProperty("gBestFRR") double gBestFRR,
+			@JsonProperty("size") int size) {
+		this.pBest = pBest;
+		this.gBest = gBest;
+		this.position = position;
+		this.velocity = velocity;
+		this.fitness = fitness;
+		this.fitnesspBest = fitnesspBest;
+		this.fitnessgBest = fitnessgBest;
+		this.FAR = fAR;
+		this.FRR = fRR;
+		this.gBestFAR = gBestFAR;
+		this.gBestFRR = gBestFRR;
+		this.size = size;
+	}
 
 	public Particle(int size) {
 		this.size = size;
@@ -76,6 +107,7 @@ public class Particle implements Comparable<Particle> {
 			return 0;
 	}
 
+	@JsonIgnore
 	public boolean[] getBinaryParticle() {
 		boolean[] positionsTemp = new boolean[size];
 		for (int i = 0; i < size; i++)
@@ -160,6 +192,7 @@ public class Particle implements Comparable<Particle> {
 		this.gBestFRR = gBestFRR;
 	}
 
+	@JsonIgnore
 	public int getEnableFeaturesgBest() {
 		int count = 0;
 		for (int i = 0; i < gBest.length; i++) {
@@ -169,6 +202,7 @@ public class Particle implements Comparable<Particle> {
 		return count;
 	}
 
+	@JsonIgnore
 	public int getDisabledFeaturesgBest() {
 		int count = 0;
 		for (int i = 0; i < gBest.length; i++) {
@@ -178,6 +212,7 @@ public class Particle implements Comparable<Particle> {
 		return count;
 	}
 
+	@JsonIgnore
 	public double getFeatureReductiongBest() {
 		return (100 * getDisabledFeaturesgBest()) / size;
 	}
