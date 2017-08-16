@@ -1,27 +1,12 @@
-package main;
+package excelGenerator;
 
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-import excelGenerator.ExcelGenerator;
+import main.Particle;
 
 public class ParticleToExcel {
-
-	public static void updateExcelByGeneration(ExcelGenerator excelGenerator,List<Particle> population, int interation, long totalTime, int seed){
-//		System.out.println("The best particle is: " + population.get(0).getFitnessgBest() + " in interation " + interation);
-		excelGenerator.insertCellInfo(interation + 1, 0, interation, Cell.CELL_TYPE_STRING);
-		excelGenerator.insertCellInfo(interation + 1, 1, population.get(0).getFitnessgBest(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 2, population.get(0).getgBestFAR(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 3, population.get(0).getgBestFRR(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 4, population.get(0).toStringBinarygBest(), Cell.CELL_TYPE_STRING);
-		excelGenerator.insertCellInfo(interation + 1, 5, population.get(0).getEnableFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 6, population.get(0).getDisabledFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 7, population.get(0).getFeatureReductiongBest(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 8, seed, Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 9, totalTime, Cell.CELL_TYPE_NUMERIC);
-
-	}
 	
 	public static void createLabelExcel(ExcelGenerator excelGenerator){
 		excelGenerator.insertCellInfo(0, 0, "Interaction", Cell.CELL_TYPE_STRING);
@@ -35,5 +20,20 @@ public class ParticleToExcel {
 		excelGenerator.insertCellInfo(0, 8, "Seed", Cell.CELL_TYPE_STRING);
 		excelGenerator.insertCellInfo(0, 9, "Time(ms)", Cell.CELL_TYPE_STRING);
 	}
-	
+
+
+	public static void updateExcelByGeneration(ExcelGenerator excelGenerator,List<Particle> population, int interation, long totalTime, int seed){
+		excelGenerator.insertCellInfo(interation + 1, 0, interation, Cell.CELL_TYPE_STRING);
+		excelGenerator.insertCellInfo(interation + 1, 1, population.get(0).getFitnessgBest(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 2, population.get(0).getgBestFAR(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 3, population.get(0).getgBestFRR(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 4, population.get(0).toStringBinarygBest(), Cell.CELL_TYPE_STRING);
+		excelGenerator.insertCellInfo(interation + 1, 5, population.get(0).getEnableFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 6, population.get(0).getDisabledFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 7, population.get(0).getFeatureReductiongBest(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 8, seed, Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 9, totalTime, Cell.CELL_TYPE_NUMERIC);
+
+	}
+		
 }

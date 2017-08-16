@@ -2,7 +2,6 @@ package excelGenerator;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -14,8 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 public class ExcelGenerator {
 
 	private String fileName = "";
-	// private HSSFWorkbook workbook;
-	// private HSSFSheet sheetInfoGA;
 
 	public static void clearFiles() {
 		File[] files = new File(".").listFiles();
@@ -32,8 +29,6 @@ public class ExcelGenerator {
 
 	public ExcelGenerator(String order) {
 		this.fileName += order + ".xls";
-		// workbook = new HSSFWorkbook();
-		// sheetInfoGA = workbook.createSheet("PSO");
 	}
 
 	public synchronized void insertCellInfo(int row, int cell, Object info, int cellTypeNumeric) {
