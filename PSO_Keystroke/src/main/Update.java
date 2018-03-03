@@ -18,9 +18,9 @@ public class Update {
 		double pVelocities[] = new double[particle.getSize()];
 		double pPositions[] = new double[particle.getSize()];
 		for (int i = 0; i < particle.getSize(); i++) {
-			pVelocities[i] = weight * particle.getVelocity()[i]
-					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getpBest()[i] - particle.getPosition()[i])
-					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getgBest()[i] - particle.getPosition()[i]);
+//			pVelocities[i] = weight * particle.getVelocity()[i]
+//					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getpBest()[i] - particle.getPosition()[i])
+//					+ VELOCITYCOEFFICIENT * Math.random() * (particle.getgBest()[i] - particle.getPosition()[i]);
 
 //			double position = particle.getPosition()[i] + pVelocities[i];
 //			if (position > 2)
@@ -28,21 +28,21 @@ public class Update {
 //			else if (position < -2)
 //				position = -2;
 
-			double S = 1 / (1 + Math.exp(-pVelocities[i]));
-			double position = 0;
-			if (Math.random() >= S)
-				position = 0;
-			else
-				position = 1;
+//			double S = 1 / (1 + Math.exp(-pVelocities[i]));
+//			double position = 0;
+//			if (Math.random() >= S)
+//				position = 0;
+//			else
+//				position = 1;
 
-			pPositions[i] = position;
+			pPositions[i] = 1;
 		}
 
 		particle.setVelocity(pVelocities);
 		particle.setPosition(pPositions);
 
-		// ResultClassification resultClassification = Fitness.getClassification(particle, classifier);
-		ResultClassification resultClassification = FunctionTest.getFitness(particle.getBinaryParticle());
+		 ResultClassification resultClassification = Fitness.getClassification(particle, classifier);
+//		ResultClassification resultClassification = FunctionTest.getFitness(particle.getBinaryParticle());
 
 		particle.setFitness(resultClassification.getPctCorrect());
 		particle.setFAR(resultClassification.getFAR());

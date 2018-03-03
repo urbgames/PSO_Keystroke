@@ -48,7 +48,7 @@ public class PSO {
 				}
 
 //			Update.updatePopulation(population);
-			Update.updatePopulationlBest(population);
+//			Update.updatePopulationlBest(population);
 			long totalTime = System.currentTimeMillis() - startTime;
 			ParticleToExcel.updateExcelByGeneration(excelGenerator, population, currentInteration, totalTime,
 					classifier.getSeed());

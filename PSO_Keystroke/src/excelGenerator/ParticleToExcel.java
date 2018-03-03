@@ -29,9 +29,14 @@ public class ParticleToExcel {
 		population.sort(Comparator.comparing(Particle::getFitnessgBest));
 		
 		excelGenerator.insertCellInfo(interation + 1, 0, interation, Cell.CELL_TYPE_STRING);
-		excelGenerator.insertCellInfo(interation + 1, 1, population.get(population.size()-1).getFitnessgBest(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 2, population.get(0).getgBestFAR(), Cell.CELL_TYPE_NUMERIC);
-		excelGenerator.insertCellInfo(interation + 1, 3, population.get(0).getgBestFRR(), Cell.CELL_TYPE_NUMERIC);
+//		excelGenerator.insertCellInfo(interation + 1, 1, population.get(population.size()-1).getFitnessgBest(), Cell.CELL_TYPE_NUMERIC);
+//		excelGenerator.insertCellInfo(interation + 1, 2, population.get(0).getgBestFAR(), Cell.CELL_TYPE_NUMERIC);
+//		excelGenerator.insertCellInfo(interation + 1, 3, population.get(0).getgBestFRR(), Cell.CELL_TYPE_NUMERIC);
+//		
+		excelGenerator.insertCellInfo(interation + 1, 1, population.get(0).getFitness(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 2, population.get(0).getFAR(), Cell.CELL_TYPE_NUMERIC);
+		excelGenerator.insertCellInfo(interation + 1, 3, population.get(0).getFRR(), Cell.CELL_TYPE_NUMERIC);
+		
 		excelGenerator.insertCellInfo(interation + 1, 4, population.get(0).toStringBinarygBest(), Cell.CELL_TYPE_STRING);
 		excelGenerator.insertCellInfo(interation + 1, 5, population.get(0).getEnableFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
 		excelGenerator.insertCellInfo(interation + 1, 6, population.get(0).getDisabledFeaturesgBest(), Cell.CELL_TYPE_NUMERIC);
